@@ -1,31 +1,11 @@
-# Byte-compiled files
 __pycache__/
 *.py[cod]
-
-# Virtual environments
-venv/
 .venv/
-env/
-
-# Environment variables
+venv/
 .env
-
-# VS Code
-.vscode/
-
-# macOS
+.pytest_cache/
+.coverage
+htmlcov/
 .DS_Store
-
-# Logs
-*.log
-
-# SQLite databases
-*.db
-
-# PyCharm
+.vscode/
 .idea/
-
-# Build files
-build/
-dist/
-*.egg-info/
