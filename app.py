@@ -2,6 +2,7 @@ import streamlit as st
 
 from src.pdf_utils import extract_text_from_pdf
 from src.summary import summarize_text
+from src.question_answering import answer_question
 
 
 st.set_page_config(
@@ -37,6 +38,23 @@ if uploaded_file is not None:
 
             st.subheader("AI Summary")
             st.markdown(summary)
+
+            st.subheader("Ask a Question About the Document")
+
+            question = st.text_input(
+                "Enter your question",
+                placeholder="Example: What methodology did the paper use?",
+)
+
+            if st.button("Ask Question"):
+                if question.strip():
+                    with st.spinner("Searching the document for an answer..."):
+                        answer = answer_question(text, question)
+
+                    st.markdown("### Answer")
+                    st.markdown(answer)
+                else:
+                    st.warning("Please enter a question before clicking the button.")
 
             st.divider()
 
