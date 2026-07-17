@@ -1,6 +1,7 @@
 import streamlit as st
 
 from src.pdf_utils import extract_text_from_pdf
+from src.summary import summarize_text
 
 
 st.set_page_config(
@@ -11,8 +12,8 @@ st.set_page_config(
 
 st.title("AI Research Assistant")
 st.write(
-    "Upload an academic PDF to extract its text and inspect a preview. "
-    "AI summarization will be added in the next milestone."
+    "Upload an academic PDF to extract its text, generate an AI-powered "
+    "summary, and inspect the original text."
 )
 
 uploaded_file = st.file_uploader(
@@ -31,6 +32,14 @@ if uploaded_file is not None:
         col2.metric("Characters extracted", f"{len(text):,}")
 
         if text.strip():
+            with st.spinner("Gemini is reading your research paper..."):
+                summary = summarize_text(text)
+
+            st.subheader("AI Summary")
+            st.markdown(summary)
+
+            st.divider()
+
             st.subheader("Extracted-text preview")
             st.text_area(
                 "First 5,000 characters",
@@ -44,8 +53,9 @@ if uploaded_file is not None:
             )
     except ValueError as exc:
         st.error(str(exc))
-    except Exception:
+    except Exception as exc:
         st.error(
-            "The PDF could not be processed. Try another file and check the terminal "
-            "for additional error information."
+            "The document could not be summarized. Please try again or use "
+            "a different PDF."
         )
+            
