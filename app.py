@@ -3,6 +3,7 @@ import streamlit as st
 from src.pdf_utils import extract_text_from_pdf
 from src.summary import summarize_text
 from src.question_answering import answer_question
+from src.comparison import compare_documents
 
 
 st.set_page_config(
@@ -76,4 +77,63 @@ if uploaded_file is not None:
             "The document could not be summarized. Please try again or use "
             "a different PDF."
         )
-            
+
+# ====================================
+# Compare Two Documents
+# ====================================      
+
+    st.divider()
+st.header("Compare Two Documents")
+
+comparison_col1, comparison_col2 = st.columns(2)
+
+with comparison_col1:
+    comparison_file_a = st.file_uploader(
+        "Choose the first PDF",
+        type=["pdf"],
+        key="comparison_file_a",
+    )
+
+with comparison_col2:
+    comparison_file_b = st.file_uploader(
+        "Choose the second PDF",
+        type=["pdf"],
+        key="comparison_file_b",
+    )
+
+if st.button("Compare Documents"):
+    if comparison_file_a is None or comparison_file_b is None:
+        st.warning("Please upload both PDF files before comparing them.")
+    else:
+        try:
+            with st.spinner("Extracting and comparing both documents..."):
+                text_a, page_count_a = extract_text_from_pdf(
+                    comparison_file_a.getvalue()
+                )
+                text_b, page_count_b = extract_text_from_pdf(
+                    comparison_file_b.getvalue()
+                )
+
+                comparison = compare_documents(
+                    text_a=text_a,
+                    text_b=text_b,
+                    document_a_name=comparison_file_a.name,
+                    document_b_name=comparison_file_b.name,
+                )
+
+            st.success(
+                f"Compared {comparison_file_a.name} "
+                f"({page_count_a} pages) with "
+                f"{comparison_file_b.name} ({page_count_b} pages)."
+            )
+
+            st.subheader("Comparison Report")
+            st.markdown(comparison)
+
+        except ValueError as exc:
+            st.error(str(exc))
+        except Exception:
+            st.error(
+                "The documents could not be compared. "
+                "Please try again with different PDF files."
+            )
