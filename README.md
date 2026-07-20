@@ -28,15 +28,16 @@ An AI-powered research assistant built with Python, Streamlit, and Google Gemini
 
 ## 📑 Table of Contents
 
+## 📑 Table of Contents
+
 - [Overview](#-overview)
+- [Why I Built This](#-why-i-built-this)
 - [Features](#-features)
-- [Screenshots](#-screenshots)
-- [Architecture](#-architecture)
-- [Technology Stack](#-technology-stack)
-- [Installation](#-installation)
-- [Usage](#-usage)
-- [Roadmap](#-roadmap)
+- [System Architecture](#-system-architecture)
+- [Engineering Decisions](#-engineering-decisions)
+- [Future Roadmap](#-future-roadmap)
 - [About the Developer](#-about-the-developer)
+- [What I Learned](#-what-i-learned)
 
 ---
 
@@ -47,6 +48,15 @@ AI Research Assistant is an AI-powered web application that helps researchers, s
 The application combines a clean Streamlit interface with Google's Gemini large language model and PyMuPDF for PDF text extraction, providing an intuitive workflow for exploring complex research documents.
 
 ---
+
+## 🌟 Project Highlights
+
+- AI-powered document summarization
+- Natural language question answering
+- Research paper comparison
+- Modular Python architecture
+- Interactive Streamlit interface
+- Professional software documentation
 
 # 🎯 Why I Built This
 
@@ -79,7 +89,9 @@ This modular approach makes it easier to extend the application with additional 
 
 ### Architecture Diagram
 
-*(Architecture diagram coming below)*s
+<p align="center">
+  <img src="assets/architecture.png" alt="AI Research Assistant System Architecture" width="100%">
+</p>
 
 # 🧠 Engineering Decisions
 
@@ -156,3 +168,11 @@ Building this application helped me gain practical experience with:
 - Structuring projects for maintainability and scalability
 
 This project reinforced the importance of clean architecture, reusable code, and user-focused software design.
+
+---
+
+<p align="center">
+
+Made with ❤️ using Python, Streamlit, and Google Gemini
+
+</p>
