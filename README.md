@@ -1,85 +1,68 @@
-# AI Research Assistant
+<p align="center">
+  <img src="assets/banner.png" alt="AI Research Assistant Banner" width="100%">
+</p>
 
-A beginner-friendly Python and Streamlit application for extracting and analyzing text from academic research papers.
+<h1 align="center">📚 AI Research Assistant</h1>
 
-## Current milestone: Version 0.2
+<p align="center">
+Analyze research papers in minutes using AI.
+</p>
 
-The application currently:
+<p align="center">
+An AI-powered research assistant built with Python, Streamlit, and Google Gemini that summarizes research papers, answers questions, compares documents, and helps users gain insights from academic PDFs.
+</p>
 
-- accepts one PDF upload;
-- extracts selectable text with PyMuPDF;
-- reports page and character counts;
-- displays a text preview;
-- handles empty and unreadable files.
+<p align="center">
 
-AI summarization, question answering, paper comparison, citations, and cloud deployment are planned for later milestones.
+![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python)
 
-## Why this project exists
+![Streamlit](https://img.shields.io/badge/Streamlit-App-red?logo=streamlit)
 
-Graduate students often spend significant time organizing and reviewing academic papers. This project explores how document-processing and AI tools can support that workflow while demonstrating Python, software design, testing, documentation, and Git version control.
+![Google Gemini](https://img.shields.io/badge/Google-Gemini-blueviolet)
 
-## Project structure
+![License](https://img.shields.io/badge/License-MIT-green)
 
-```text
-AI-Research-Assistant/
-├── app.py
-├── src/
-│   ├── __init__.py
-│   └── pdf_utils.py
-├── tests/
-│   └── test_pdf_utils.py
-├── requirements.txt
-├── .gitignore
-└── README.md
-```
+![GitHub last commit](https://img.shields.io/github/last-commit/TylanKnight/AI-Research-Assistant)
 
-## Run locally
+</p>
 
-1. Create a virtual environment:
+## 📑 Table of Contents
 
-   Windows:
-   ```powershell
-   py -m venv .venv
-   .venv\Scripts\activate
-   ```
+- [Overview](#-overview)
+- [Features](#-features)
+- [Screenshots](#-screenshots)
+- [Architecture](#-architecture)
+- [Technology Stack](#-technology-stack)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Roadmap](#-roadmap)
+- [About the Developer](#-about-the-developer)
 
-   macOS/Linux:
-   ```bash
-   python3 -m venv .venv
-   source .venv/bin/activate
-   ```
+---
 
-2. Install dependencies:
+# 📖 Overview
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+AI Research Assistant is an AI-powered web application that helps researchers, students, and professionals analyze academic papers more efficiently. Instead of manually reading lengthy PDF documents, users can upload one or two research papers and leverage Google's Gemini AI model to generate concise summaries, answer questions about the document, and compare multiple papers.
 
-3. Start the application:
+The application combines a clean Streamlit interface with Google's Gemini large language model and PyMuPDF for PDF text extraction, providing an intuitive workflow for exploring complex research documents.
 
-   ```bash
-   streamlit run app.py
-   ```
+---
 
-4. Open the local address Streamlit displays in the terminal.
+# 🎯 Why I Built This
 
-## Run tests
+Reading research papers can be time-consuming, especially when comparing multiple sources or trying to locate specific information. I built this project to explore how modern large language models can simplify research workflows while improving my skills in Python application development, API integration, modular software architecture, and user interface design.
 
-```bash
-pytest
-```
+This project also serves as a portfolio piece demonstrating practical software engineering principles, including clean code organization, reusable modules, API integration, and version control with Git.
 
-## Roadmap
+---
 
-- [x] Create repository foundation
-- [x] Add PDF upload and text extraction
-- [ ] Generate structured paper summaries
-- [ ] Ask questions about an uploaded paper
-- [ ] Compare two papers
-- [ ] Export research notes
-- [ ] Add more automated tests
-- [ ] Deploy a public demo
+# ✨ Features
 
-## License
-
-MIT
+- 📄 Upload and analyze PDF research papers
+- 🤖 Generate AI-powered summaries using Google Gemini
+- ❓ Ask questions about uploaded documents
+- 📚 Compare two research papers side-by-side
+- 🔍 Extract text from PDFs using PyMuPDF
+- ⚡ Fast and interactive Streamlit interface
+- 🧩 Modular project architecture for maintainability
+- 🛠️ Built with modern Python development practices
