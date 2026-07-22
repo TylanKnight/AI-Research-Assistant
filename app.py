@@ -72,11 +72,9 @@ def render_single_document_section() -> None:
 
     except ValueError as exc:
         st.error(str(exc))
-    except Exception:
-        st.error(
-            "The document could not be analyzed. Please try again or use "
-            "a different PDF."
-        )
+    except Exception as error:
+        st.error(f"Analysis error: {error}")
+        print(f"Analysis error: {type(error).__name__}: {error}")
 
 
 def render_comparison_section() -> None:

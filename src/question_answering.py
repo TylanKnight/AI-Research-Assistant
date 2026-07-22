@@ -1,11 +1,12 @@
-import os
+from .gemini_service import GeminiService
 
-from google import genai
+
+MAX_DOCUMENT_CHARS = 30000
 
 
 def answer_question(text: str, question: str) -> str:
     """
-    Answer a user's question using only the provided document text.
+    Answer a user's question using only the provided document.
     """
 
     if not text or not text.strip():
@@ -14,41 +15,29 @@ def answer_question(text: str, question: str) -> str:
     if not question or not question.strip():
         raise ValueError("Please enter a question.")
 
-    api_key = os.getenv("GEMINI_API_KEY")
-
-    if not api_key:
-        raise EnvironmentError(
-            "GEMINI_API_KEY was not found in the environment."
-        )
-
-    client = genai.Client(api_key=api_key)
-
-    document_text = text[:30000]
+    document_text = text[:MAX_DOCUMENT_CHARS]
 
     prompt = f"""
 You are an AI research assistant.
 
-Answer the user's question using only the document text provided below.
+Answer the user's question using ONLY the provided document.
 
 Rules:
-- Do not invent information.
-- If the answer is not present in the document, clearly say so.
-- Give a clear and concise answer.
-- Include supporting details from the document when available.
 
-User question:
+- Never invent information.
+- If the answer cannot be found, clearly say so.
+- Keep the response concise.
+- Quote important facts from the document when appropriate.
+
+Question:
+
 {question}
 
-Document text:
+Document:
+
 {document_text}
 """
 
-    response = client.models.generate_content(
-        model="gemini-3.5-flash",
-        contents=prompt,
-    )
+    service = GeminiService()
 
-    if not response.text:
-        raise RuntimeError("Gemini returned an empty response.")
-
-    return response.text
+    return service.generate(prompt)

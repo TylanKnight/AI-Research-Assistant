@@ -1,6 +1,43 @@
-import os
+from .gemini_service import GeminiService
 
-from google import genai
+
+MAX_DOCUMENT_CHARS = 15000
+
+
+def _create_snapshot(
+    service: GeminiService,
+    text: str,
+    document_name: str,
+) -> str:
+    """
+    Creates a concise snapshot of a document that can later be compared.
+    """
+
+    prompt = f"""
+You are an AI research assistant.
+
+Analyze the document below.
+
+Return ONLY:
+
+1. Main Topic
+2. Research Purpose
+3. Methodology
+4. Key Findings
+5. Conclusions
+6. Limitations
+
+Keep the response under 500 words.
+
+Document Name:
+{document_name}
+
+Document:
+
+{text[:MAX_DOCUMENT_CHARS]}
+"""
+
+    return service.generate(prompt)
 
 
 def compare_documents(
@@ -10,7 +47,7 @@ def compare_documents(
     document_b_name: str = "Document B",
 ) -> str:
     """
-    Compare two documents and return a structured AI-generated report.
+    Compare two research papers using compact AI-generated snapshots.
     """
 
     if not text_a or not text_a.strip():
@@ -19,57 +56,66 @@ def compare_documents(
     if not text_b or not text_b.strip():
         raise ValueError(f"No text was extracted from {document_b_name}.")
 
-    api_key = os.getenv("GEMINI_API_KEY")
+    service = GeminiService()
 
-    if not api_key:
-        raise EnvironmentError(
-            "GEMINI_API_KEY was not found in the environment."
-        )
-
-    client = genai.Client(api_key=api_key)
-
-    document_a_text = text_a[:30000]
-    document_b_text = text_b[:30000]
-
-    prompt = f"""
-You are an AI research assistant.
-
-Compare the two documents below and create a structured comparison report.
-
-Use these sections:
-
-1. Overall Focus
-2. Main Similarities
-3. Main Differences
-4. Research Questions or Objectives
-5. Methodology Comparison
-6. Findings or Conclusions
-7. Limitations
-8. Overall Evaluation
-
-Rules:
-- Base the comparison only on the provided document text.
-- Do not invent missing information.
-- Clearly state when a section is not discussed in one or both documents.
-- Refer to the documents by their provided names.
-- Use clear headings and bullet points where appropriate.
-- Keep the comparison balanced and objective.
-
-{document_a_name}:
-
-{document_a_text}
-
-{document_b_name}:
-
-{document_b_text}
-"""
-
-    response = client.models.generate_content(
-        model="gemini-3.5-flash",
-        contents=prompt,
+    snapshot_a = _create_snapshot(
+        service,
+        text_a,
+        document_a_name,
     )
 
-    if not response.text:
-        raise RuntimeError("Gemini returned an empty comparison response.")
+    snapshot_b = _create_snapshot(
+        service,
+        text_b,
+        document_b_name,
+    )
 
-    return response.text
+    comparison_prompt = f"""
+You are an AI research assistant.
+
+Compare these two research paper summaries.
+
+=========================
+
+{document_a_name}
+
+{snapshot_a}
+
+=========================
+
+{document_b_name}
+
+{snapshot_b}
+
+=========================
+
+Create a professional comparison report with these sections:
+
+# Overall Focus
+
+# Main Similarities
+
+# Main Differences
+
+# Research Objectives
+
+# Methodology Comparison
+
+# Findings Comparison
+
+# Strengths
+
+# Weaknesses
+
+# Overall Evaluation
+
+Rules:
+
+- Base your comparison ONLY on the summaries above.
+- Do not invent information.
+- Use headings.
+- Use bullet points whenever appropriate.
+- Be objective and balanced.
+"""
+
+    return service.generate(comparison_prompt)

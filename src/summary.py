@@ -1,53 +1,49 @@
-import os
+from .gemini_service import GeminiService
 
-from google import genai
+
+MAX_DOCUMENT_CHARS = 30000
 
 
 def summarize_text(text: str) -> str:
     """
-    Send extracted research-paper text to Gemini and return a structured summary.
+    Generate a structured summary for a research paper.
     """
 
     if not text or not text.strip():
         raise ValueError("No text was provided for summarization.")
-    
-    text = text[:30000]  # Limit to first 30,000 characters to avoid exceeding API limits.  
 
-    api_key = os.getenv("GEMINI_API_KEY")
-
-    if not api_key:
-        raise EnvironmentError(
-            "GEMINI_API_KEY was not found in the environment."
-        )
-
-    client = genai.Client(api_key=api_key)
+    document_text = text[:MAX_DOCUMENT_CHARS]
 
     prompt = f"""
-You are a research assistant.
+You are an expert AI research assistant.
 
-Summarize the research paper text below using these sections:
+Summarize the research paper using the following sections.
 
-1. Overview
-2. Research Question or Purpose
-3. Methodology
-4. Key Findings
-5. Limitations
-6. Future Research
+# Overview
 
-Use clear language and bullet points where appropriate.
-Do not invent information that is not present in the paper.
+# Research Question or Purpose
 
-Research paper text:
+# Methodology
 
-{text}
+# Key Findings
+
+# Limitations
+
+# Future Research
+
+Instructions:
+
+- Use only the document.
+- Never invent information.
+- Use headings.
+- Use bullet points when appropriate.
+- Keep the summary clear and concise.
+
+Research Paper:
+
+{document_text}
 """
 
-    response = client.models.generate_content(
-        model="gemini-3.5-flash",
-        contents=prompt,
-    )
+    service = GeminiService()
 
-    if not response.text:
-        raise RuntimeError("Gemini returned an empty response.")
-
-    return response.text
+    return service.generate(prompt)
